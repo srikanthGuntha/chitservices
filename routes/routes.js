@@ -1,5 +1,6 @@
 var bodyParser = require("body-parser");
 var auth = require("./auth");
+var branches = require("../src/admin/branches");
 
 module.exports = {
 
@@ -22,6 +23,15 @@ module.exports = {
         // user login registration
         app.post("/login", auth.login);
         app.post("/register", auth.register);
+
+        /*******************************************************************
+         * Admin servcies
+        *******************************************************************/
+        // branches
+        app.post("/api/v1/savebranches", branches.savebranches);
+        app.get("/api/v1/getbranches", branches.getbranches);
+        app.put("/api/v1/updatebranches", branches.updatebranches);
+        app.delete("/api/v1/deletebranches", branches.deletebranches);
 
         // dummy services
         app.get("/", function(req, res) {
