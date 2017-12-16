@@ -2,6 +2,8 @@ var bodyParser = require("body-parser");
 var auth = require("./auth");
 var branches = require("../src/admin/branches");
 var chitids = require("../src/admin/chitids");
+var chits = require("../src/admin/chits");
+var common = require("../src/common");
 
 module.exports = {
 
@@ -25,6 +27,9 @@ module.exports = {
         app.post("/login", auth.login);
         app.post("/register", auth.register);
 
+        // non auth but hit db services
+        app.get("/getchitgroups", common.getchitgroups);
+
         /*******************************************************************
          * Admin servcies
         *******************************************************************/
@@ -38,6 +43,11 @@ module.exports = {
         app.get("/api/v1/getchitids", chitids.getchitids);
         app.put("/api/v1/updatechitids", chitids.updatechitids);
         app.delete("/api/v1/deletechitids", chitids.deletechitids);
+        // chits
+        app.post("/api/v1/savechits", chits.savechits);
+        app.get("/api/v1/getchits", chits.getchits);
+        app.put("/api/v1/updatechits", chits.updatechits);
+        app.delete("/api/v1/deletechits", chits.deletechits);
 
         // dummy services
         app.get("/", function(req, res) {
