@@ -52,7 +52,7 @@ var branches = {
 	},
 	deletebranches: function(req, res) {
 		try{
-			var branchid = req.body.branchid;
+			var branchid = req.deleteItemData;
 			var branch_id = new mongo.ObjectID(branchid);
 			var userid = req.sessionuid;
 			var gquery = { "_id": branch_id, "userid": userid};
