@@ -52,7 +52,7 @@ var chits = {
 	},
 	deletechits: function(req, res) {
 		try{
-			var chitid = req.body.chitid;
+			var chitid = req.deleteItemData;
 			var chit_id = new mongo.ObjectID(chitid);
 			var userid = req.sessionuid;
 			var gquery = { "_id": chit_id, "userid": userid};
