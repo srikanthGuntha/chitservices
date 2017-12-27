@@ -4,6 +4,7 @@ var branches = require("../src/admin/branches");
 var chitids = require("../src/admin/chitids");
 var chits = require("../src/admin/chits");
 var common = require("../src/common");
+var chitsmgmt = require("../src/chitmgmt");
 
 module.exports = {
 
@@ -30,6 +31,10 @@ module.exports = {
 
         // non auth but hit db services
         app.get("/getchitgroups", common.getchitgroups);
+
+        // 
+        app.post("/api/v1/savemanagementchits", chitsmgmt.savemanagementchits);
+        app.get("/api/v1/getmanagementchits", chitsmgmt.getmanagementchits);
 
         /*******************************************************************
          * Admin servcies
