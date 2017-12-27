@@ -20,13 +20,35 @@ var chitsmgmt = {
 	},
 	savemanagementchits: function(req, res){
 		var chitmgmt = new ChitMgmtModel({
-	        chitid: req.body.chitid,
+	        joinchitid: req.body.joinchitid,
 	        userid: mongoose.Types.ObjectId(req.sessionuid)
 	    });
 
 		chitmgmt.save(function(err, result){
 			if (err) res.json(utils.response("failure", { "errmsg": err }));
 
+			res.json(utils.response("success", result));
+		});
+	},
+	updatemanagementchits: function(req, res){
+		let chitmgmtdata = req.body;
+		let chitmgmtid = chitmgmtdata.chitmgmtid;
+
+		delete chitmgmtdata.chitmgmtid;
+
+		ChitMgmtModel.update({ _id: chitmgmtid }, { $set: chitmgmtdata}, function(err, result){
+			if(err) res.json(utils.response("failure", {"errmsg": err}));
+			res.json(utils.response("success", result));
+		});
+	},
+	deletemanagementchits: function(req, res){
+		let chitmgmtdata = req.body;
+		let chitmgmtid = chitmgmtdata.chitmgmtid;
+
+		delete chitmgmtdata.chitmgmtid;
+		
+		ChitMgmtModel.findOneAndRemove({ _id: chitmgmtid }, function(err, result){
+			if(err) res.json(utils.response("failure", {"errmsg": err}));
 			res.json(utils.response("success", result));
 		});
 	}

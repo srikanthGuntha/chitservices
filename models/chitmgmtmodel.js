@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var schema = new Schema({
-    chitid: {
+    joinchitid: {
         type: String,
         required: true
     },
-    chitstatus: {
+    joinchitstatus: {
     	type: Number,
     	required: true,
     	default: 0
