@@ -35,6 +35,8 @@ module.exports = {
         // 
         app.post("/api/v1/savemanagementchits", chitsmgmt.savemanagementchits);
         app.get("/api/v1/getmanagementchits", chitsmgmt.getmanagementchits);
+        app.put("/api/v1/updatemanagementchits", chitsmgmt.updatemanagementchits);
+        app.delete("/api/v1/deletemanagementchits", chitsmgmt.deletemanagementchits);
 
         /*******************************************************************
          * Admin servcies
