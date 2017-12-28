@@ -36,12 +36,14 @@ var branches = {
 	updatebranches: function(req, res){
 		try {
 			var branch = req.body;
-			var branchid = branch.branchid;
+			var branchid = req.actionid;
 			var branch_id = new mongo.ObjectID(branchid);
 			var userid = req.sessionuid;
 			var gquery = {"_id": branch_id, "userid": userid};
 
 			delete branch.branchid;
+			delete branch._id;
+
 			db.branches.update(gquery, {$set: branch}, function(err, result){
 				if(err) res.json(utils.response("failure", {"errmsg": err}));
 				res.json(utils.response("success", result));
@@ -52,7 +54,7 @@ var branches = {
 	},
 	deletebranches: function(req, res) {
 		try{
-			var branchid = req.deleteItemData;
+			var branchid = req.actionid;
 			var branch_id = new mongo.ObjectID(branchid);
 			var userid = req.sessionuid;
 			var gquery = { "_id": branch_id, "userid": userid};
