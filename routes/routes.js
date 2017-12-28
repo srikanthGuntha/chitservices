@@ -18,7 +18,7 @@ module.exports = {
         // to allow the CORS
         app.use(function(req, res, next) {
             res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Methods", "*");
+            res.header("Access-Control-Allow-Methods", "GET, PUT, POST, PATCH, DELETE");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-delete-item-id");
             next();
         });
