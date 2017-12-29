@@ -41,7 +41,6 @@ var branches = {
 			var userid = req.sessionuid;
 			var gquery = {"_id": branch_id, "userid": userid};
 
-			delete branch.branchid;
 			delete branch._id;
 
 			db.branches.update(gquery, {$set: branch}, function(err, result){
