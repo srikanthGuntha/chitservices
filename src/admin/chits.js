@@ -36,12 +36,13 @@ var chits = {
 	updatechits: function(req, res){
 		try {
             var chitdata = req.body;
-			var chitid = chitdata.chitid;
+			var chitid = req.actionid;
 			var chit_id = new mongo.ObjectID(chitid);
 			var userid = req.sessionuid;
 			var gquery = {"_id": chit_id, "userid": userid};
 
-			delete chitdata.chitid;
+			delete chitdata._id;
+			
 			db.chits.update(gquery, {$set: chitdata}, function(err, result){
 				if(err) res.json(utils.response("failure", {"errmsg": err}));
 				res.json(utils.response("success", result));
@@ -52,7 +53,7 @@ var chits = {
 	},
 	deletechits: function(req, res) {
 		try{
-			var chitid = req.deleteItemData;
+			var chitid = req.actionid;
 			var chit_id = new mongo.ObjectID(chitid);
 			var userid = req.sessionuid;
 			var gquery = { "_id": chit_id, "userid": userid};

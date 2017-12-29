@@ -32,9 +32,9 @@ var chitsmgmt = {
 	},
 	updatemanagementchits: function(req, res){
 		let chitmgmtdata = req.body;
-		let chitmgmtid = chitmgmtdata.chitmgmtid;
+		let chitmgmtid = req.actionid;
 
-		delete chitmgmtdata.chitmgmtid;
+		delete chitmgmtdata._id;
 
 		ChitMgmtModel.update({ _id: chitmgmtid }, { $set: chitmgmtdata}, function(err, result){
 			if(err) res.json(utils.response("failure", {"errmsg": err}));
@@ -42,10 +42,7 @@ var chitsmgmt = {
 		});
 	},
 	deletemanagementchits: function(req, res){
-		let chitmgmtdata = req.body;
-		let chitmgmtid = chitmgmtdata.chitmgmtid;
-
-		delete chitmgmtdata.chitmgmtid;
+		let chitmgmtid = req.actionid;
 		
 		ChitMgmtModel.findOneAndRemove({ _id: chitmgmtid }, function(err, result){
 			if(err) res.json(utils.response("failure", {"errmsg": err}));
