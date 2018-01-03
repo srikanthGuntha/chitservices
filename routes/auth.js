@@ -7,7 +7,7 @@ var mongo = require('mongodb');
 var Register = require("../models/register");
 
 var auth = {
-    login: function(req, res) {
+    login1: function(req, res) {
         try {
             var logindata = req.body;
             db.registers.find(logindata, function(err, result) {
@@ -25,7 +25,7 @@ var auth = {
             res.json(utils.response("failure", { "errmsg": err }));
         }
     },
-    register: function(req, res) {
+    register1: function(req, res) {
         try {
             var userdata = req.body;
             if (!userdata) {
@@ -44,28 +44,27 @@ var auth = {
             res.json(utils.response("failure", { "errmsg": err }));
         }
     },
-    loginnew: function(req, res) {
-        Register.find({email: "pk", password: "pk"}, function(err, result){
+    login: function(req, res) {
+        let queryuser = req.body;
+
+        Register.find(queryuser, function(err, result){
             if (err) res.json(utils.response("failure", { "errmsg": err }));
 
-            var data = result[0];
+            var data = result[0].toObject();
             var token = generateToken(data["_id"]);
             data.token = token;
-            data.g = "G";
 
             res.json(utils.response("success", data));
         });
     },
-    registernew: function(req, res) {
-        var registerdata = req.body;
-        
-        var register = new Register({
+    register: function(req, res) {
+        let registerdata = req.body;
+        let register = new Register({
             firstname: registerdata.firstname,
             lastname: registerdata.lastname,
             email: registerdata.email,
             password: registerdata.password
         });
-
         register.save(function(err, result){
             if (err) res.json(utils.response("failure", { "errmsg": err }));
             
