@@ -18,12 +18,11 @@ module.exports = {
         }));
         // to allow the CORS
         app.use(function(req, res, next) {
-            res.setHeader('Access-Control-Allow-Credentials', true);
             res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4000');
             res.setHeader("Access-Control-Allow-Origin", "https://cschits.herokuapp.com");
-            res.setHeader("Access-Control-Allow-Origin", "*");
-            res.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, PATCH, DELETE");
+            res.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS, PATCH, DELETE");
             res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-delete-item-id");
+            res.setHeader('Access-Control-Allow-Credentials', true);
             next();
         });
 
@@ -33,12 +32,12 @@ module.exports = {
         app.post("/login", auth.login);
         app.post("/register", auth.register);
 
-        app.post("/loginnew", auth.loginnew);
-        app.post("/registernew", auth.registernew);
+        app.post("/loginnew", auth.login);
+        app.post("/registernew", auth.register);
 
         // non auth but hit db services
         app.get("/getpopulatechits", common.getpopulatechits);
-        app.get("/getchitgroups", common.getchitgroups);
+        // app.get("/getchitgroups", common.getchitgroups);
         // app.get("/api/v1/getidbranches", idbranches.getidbranches);
 
         // 
