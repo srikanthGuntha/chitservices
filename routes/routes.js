@@ -1,10 +1,11 @@
 var bodyParser = require("body-parser");
 var auth = require("./auth");
-var branches = require("../src/admin/branches");
-var chitids = require("../src/admin/chitids");
-var chits = require("../src/admin/chits");
+var branches = require("../src/branches");
+var chitids = require("../src/chitids");
+var chits = require("../src/chits");
 var common = require("../src/common");
-var chitsmgmt = require("../src/chitmgmt");
+// var chitsmgmt = require("../src/chitmgmt");
+// var idbranches = require("../src/idbranches");
 
 module.exports = {
 
@@ -17,9 +18,12 @@ module.exports = {
         }));
         // to allow the CORS
         app.use(function(req, res, next) {
-            res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Methods", "GET, PUT, POST, PATCH, DELETE");
-            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-delete-item-id");
+            res.setHeader('Access-Control-Allow-Credentials', true);
+            res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4000');
+            res.setHeader("Access-Control-Allow-Origin", "https://cschits.herokuapp.com");
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, PATCH, DELETE");
+            res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-delete-item-id");
             next();
         });
 
@@ -29,14 +33,19 @@ module.exports = {
         app.post("/login", auth.login);
         app.post("/register", auth.register);
 
+        app.post("/loginnew", auth.loginnew);
+        app.post("/registernew", auth.registernew);
+
         // non auth but hit db services
+        app.get("/getpopulatechits", common.getpopulatechits);
         app.get("/getchitgroups", common.getchitgroups);
+        // app.get("/api/v1/getidbranches", idbranches.getidbranches);
 
         // 
-        app.post("/api/v1/savemanagementchits", chitsmgmt.savemanagementchits);
-        app.get("/api/v1/getmanagementchits", chitsmgmt.getmanagementchits);
-        app.put("/api/v1/updatemanagementchits", chitsmgmt.updatemanagementchits);
-        app.delete("/api/v1/deletemanagementchits", chitsmgmt.deletemanagementchits);
+        // app.post("/api/v1/savemanagementchits", chitsmgmt.savemanagementchits);
+        // app.get("/api/v1/getmanagementchits", chitsmgmt.getmanagementchits);
+        // app.put("/api/v1/updatemanagementchits", chitsmgmt.updatemanagementchits);
+        // app.delete("/api/v1/deletemanagementchits", chitsmgmt.deletemanagementchits);
 
         /*******************************************************************
          * Admin servcies
@@ -46,13 +55,21 @@ module.exports = {
         app.get("/api/v1/getbranches", branches.getbranches);
         app.put("/api/v1/updatebranches", branches.updatebranches);
         app.delete("/api/v1/deletebranches", branches.deletebranches);
+        app.post("/api/v1/getonebranch", branches.getonebranch);
+
+        app.get("/api/v1/getpopulatebranches", branches.getpopulatebranches);
+
         // chitids
         app.post("/api/v1/savechitids", chitids.savechitids);
         app.get("/api/v1/getchitids", chitids.getchitids);
         app.put("/api/v1/updatechitids", chitids.updatechitids);
         app.delete("/api/v1/deletechitids", chitids.deletechitids);
+
+        app.get("/api/v1/getpopulate", chitids.getpopulate);
+
         // chits
         app.post("/api/v1/savechits", chits.savechits);
+        app.get("/api/v1/getpopulatechits", chits.getpopulatechits);
         app.get("/api/v1/getchits", chits.getchits);
         app.put("/api/v1/updatechits", chits.updatechits);
         app.delete("/api/v1/deletechits", chits.deletechits);
