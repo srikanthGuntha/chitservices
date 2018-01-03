@@ -18,8 +18,13 @@ module.exports = {
         }));
         // to allow the CORS
         app.use(function(req, res, next) {
-            res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
-            res.setHeader("Access-Control-Allow-Origin", "https://cschits.herokuapp.com");
+            var allowedOrigins = ['http://127.0.0.1:4200', 'https://chitservices.herokuapp.com'];
+            var origin = req.headers.origin;
+            if(allowedOrigins.indexOf(origin) > -1){
+                res.setHeader('Access-Control-Allow-Origin', origin);
+            }
+            // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+            // res.setHeader("Access-Control-Allow-Origin", "https://cschits.herokuapp.com");
             res.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS, PATCH, DELETE");
             res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-delete-item-id");
             res.setHeader('Access-Control-Allow-Credentials', true);
