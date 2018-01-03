@@ -3,12 +3,29 @@ var async = require("async");
 var db = require("../config/dbconfig").db;
 var utils = require("../utils/response");
 
+var mongoose = require('mongoose');
+mongoose.connect("mongodb://dbchits:dbchits123@ds135196.mlab.com:35196/dbchits", {
+	useMongoClient: true
+});
+
+var Chit = require('../models/chit');
+
 var common = {
+	getpopulatechits: function(req, res){
+		Chit.find().populate('branch chitid').exec(function(err, result) {
+			if (err) res.json(utils.response("failure", { "errmsg": err }));
+
+			res.json(utils.response("success", result));
+		});
+	},
 	getchitgroups: function(req, res) {
 		try {
 			var myMongoMod = function(chits, ourCallBack){
 				var finalArray = [];
 				async.forEachLimit(chits, 1, function(chit, userCallback){
+
+					// console.log(chit);
+
 				    async.waterfall([
 				        function(callback) {
 				            db.branches.find({_id:new mongo.ObjectID(chit.branchid)},{branchname:1},function(err,result){
@@ -16,8 +33,9 @@ var common = {
 							});
 				        },
 				        function(arg1, callback) {
-				            db.chitids.find({_id:new mongo.ObjectID(chit.chituid)},{chituniqid:1},function(err, result){
-								callback(null, arg1, result[0].chituniqid);
+				            db.chitids.find({_id:new mongo.ObjectID(chit.chituid)},{chitid:1},function(err, result){
+				            	console.log(result[0]);
+								callback(null, arg1, result[0].chitid);
 							});
 				        },
 				        function(arg1, arg2, callback) {
@@ -38,6 +56,9 @@ var common = {
 			}
 			db.chits.find().toArray(function (err, chits) {
 				if(err) res.json(utils.response("failure", {"errmsg": err}));
+
+				console.log("4444" , chits);
+
 				myMongoMod(chits, function(finallresult){
 					res.json(utils.response("success", finallresult));
 				});

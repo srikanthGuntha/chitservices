@@ -4,11 +4,13 @@ var db = require("../config/dbconfig").db;
 var utils = require("../utils/response");
 var mongo = require('mongodb');
 
+var Register = require("../models/register");
+
 var auth = {
     login: function(req, res) {
         try {
             var logindata = req.body;
-            db.users.find(logindata, function(err, result) {
+            db.registers.find(logindata, function(err, result) {
                 if (err) res.json(utils.response("failure", { "errmsg": err }));
                 var data = result[0];
                 if(data && data["_id"]) {
@@ -41,6 +43,34 @@ var auth = {
         } catch (err) {
             res.json(utils.response("failure", { "errmsg": err }));
         }
+    },
+    loginnew: function(req, res) {
+        Register.find({email: "pk", password: "pk"}, function(err, result){
+            if (err) res.json(utils.response("failure", { "errmsg": err }));
+
+            var data = result[0];
+            var token = generateToken(data["_id"]);
+            data.token = token;
+            data.g = "G";
+
+            res.json(utils.response("success", data));
+        });
+    },
+    registernew: function(req, res) {
+        var registerdata = req.body;
+        
+        var register = new Register({
+            firstname: registerdata.firstname,
+            lastname: registerdata.lastname,
+            email: registerdata.email,
+            password: registerdata.password
+        });
+
+        register.save(function(err, result){
+            if (err) res.json(utils.response("failure", { "errmsg": err }));
+            
+            res.json(utils.response("success", result));
+        });
     }
 };
 

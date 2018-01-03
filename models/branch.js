@@ -2,17 +2,13 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var schema = new Schema({
-    joinchitid: {
-        type: String,
-        required: true
-    },
-    joinchitstatus: {
-    	type: Number,
-    	required: true,
-    	default: 0
+    branchname: {
+    	type: String,
+    	required: true
     },
     userid: {
     	type: Schema.Types.ObjectId,
+        ref: "Register",
     	required: true
     },
     created_at : {
@@ -22,4 +18,5 @@ var schema = new Schema({
     }
 });
 
-module.exports = mongoose.model('ChitMgmtModel', schema);
+var Branch = mongoose.model('Branch', schema);
+module.exports = Branch;
