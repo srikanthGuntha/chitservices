@@ -3,9 +3,8 @@ var auth = require("./auth");
 var branches = require("../src/branches");
 var chitids = require("../src/chitids");
 var chits = require("../src/chits");
+var userchits = require("../src/userchits");
 var common = require("../src/common");
-// var chitsmgmt = require("../src/chitmgmt");
-// var idbranches = require("../src/idbranches");
 
 module.exports = {
 
@@ -33,23 +32,22 @@ module.exports = {
 
         app.all('/api/v1/*', [require('../middleware/validateRequest')]);
 
+        /*******************************************************************
+         * User servcies
+        *******************************************************************/
         // user login registration
         app.post("/login", auth.login);
         app.post("/register", auth.register);
 
-        app.post("/loginnew", auth.login);
-        app.post("/registernew", auth.register);
-
         // non auth but hit db services
         app.get("/getpopulatechits", common.getpopulatechits);
-        // app.get("/getchitgroups", common.getchitgroups);
-        // app.get("/api/v1/getidbranches", idbranches.getidbranches);
-
-        // 
-        // app.post("/api/v1/savemanagementchits", chitsmgmt.savemanagementchits);
-        // app.get("/api/v1/getmanagementchits", chitsmgmt.getmanagementchits);
-        // app.put("/api/v1/updatemanagementchits", chitsmgmt.updatemanagementchits);
-        // app.delete("/api/v1/deletemanagementchits", chitsmgmt.deletemanagementchits);
+        
+        // user chit services
+        app.get("/api/v1/getuserchits", userchits.getuserchits);
+        app.get("/api/v1/getpopulateuserchits", userchits.getpopulateuserchits);
+        app.post("/api/v1/saveuserchits", userchits.saveuserchits);
+        app.put("/api/v1/updateuserchits", userchits.updateuserchits);
+        app.delete("/api/v1/deleteuserchits", userchits.deleteuserchits);
 
         /*******************************************************************
          * Admin servcies

@@ -7,6 +7,32 @@ var mongo = require('mongodb');
 var Register = require("../models/register");
 
 var auth = {
+    login: function(req, res) {
+        var queryuser = req.body;
+        Register.find(queryuser, function(err, result){
+            if (err) res.json(utils.response("failure", { "errmsg": err }));
+
+            var data = result[0].toObject();
+            var token = generateToken(data["_id"]);
+            data.token = token;
+
+            res.json(utils.response("success", data));
+        });
+    },
+    register: function(req, res) {
+        var registerdata = req.body;
+        var register = new Register({
+            firstname: registerdata.firstname,
+            lastname: registerdata.lastname,
+            email: registerdata.email,
+            password: registerdata.password
+        });
+        register.save(function(err, result){
+            if (err) res.json(utils.response("failure", { "errmsg": err }));
+            
+            res.json(utils.response("success", result));
+        });
+    },
     login1: function(req, res) {
         try {
             var logindata = req.body;
@@ -43,33 +69,6 @@ var auth = {
         } catch (err) {
             res.json(utils.response("failure", { "errmsg": err }));
         }
-    },
-    login: function(req, res) {
-        let queryuser = req.body;
-
-        Register.find(queryuser, function(err, result){
-            if (err) res.json(utils.response("failure", { "errmsg": err }));
-
-            var data = result[0].toObject();
-            var token = generateToken(data["_id"]);
-            data.token = token;
-
-            res.json(utils.response("success", data));
-        });
-    },
-    register: function(req, res) {
-        let registerdata = req.body;
-        let register = new Register({
-            firstname: registerdata.firstname,
-            lastname: registerdata.lastname,
-            email: registerdata.email,
-            password: registerdata.password
-        });
-        register.save(function(err, result){
-            if (err) res.json(utils.response("failure", { "errmsg": err }));
-            
-            res.json(utils.response("success", result));
-        });
     }
 };
 
