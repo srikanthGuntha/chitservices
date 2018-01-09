@@ -12,11 +12,15 @@ var auth = {
         Register.find(queryuser, function(err, result){
             if (err) res.json(utils.response("failure", { "errmsg": err }));
 
-            var data = result[0].toObject();
-            var token = generateToken(data["_id"]);
-            data.token = token;
+            if(result.length > 0){
+                var data = result[0].toObject();
+                var token = generateToken(data["_id"]);
+                data.token = token;
 
-            res.json(utils.response("success", data));
+                res.json(utils.response("success", data));
+            } else {
+                if (err) res.json(utils.response("failure", { "errmsg": "Invalid login details" }));
+            }
         });
     },
     register: function(req, res) {

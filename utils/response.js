@@ -18,7 +18,7 @@ module.exports = {
             return reobj;
         } else if (status === "failure") {
         	return reobj = {
-                message:  data.cmsg || (data && data.message) || "Something wrong with input data or server connection!",
+                message:  data.errmsg || (data && data.message) || "Something wrong with input data or server connection!",
                 reqStatus: "failed"
             }
         }
