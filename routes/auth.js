@@ -12,7 +12,7 @@ var auth = {
         Register.find(queryuser, function(err, result){
             if (err) res.json(utils.response("failure", { "errmsg": err }));
 
-            if(result.lenght > 0){
+            if(result.length > 0){
                 var data = result[0].toObject();
                 var token = generateToken(data["_id"]);
                 data.token = token;
