@@ -22,20 +22,26 @@ var chits = {
 		});
 	},
 	savechits: function(req, res){
-		var chitdata = req.body;
-		var chit = new Chit({
-	        chitvalue: chitdata.chitvalue,
-	        tenure: chitdata.tenure,
-	        subfee: chitdata.subfee,
-	        branch: chitdata.branch,
-	        chitid: chitdata.chitid,
-	        userid: req.sessionuid
-	    });
-		chit.save(function(err, result){
-			if (err) res.json(utils.response("failure", { "errmsg": err }));
-
-			res.json(utils.response("success", result));
-		});
+		try {
+			var chitdata = req.body;
+			var chit = new Chit({
+		        chitvalue: chitdata.chitvalue,
+		        tenure: chitdata.tenure,
+		        subfee: chitdata.subfee,
+		        branch: chitdata.branch,
+		        chitid: chitdata.chitid,
+		        userid: req.sessionuid
+		    });
+			chit.save(function(err, result){
+				if(err) {
+					if (err) res.json(utils.response("failure", { "errmsg": err }));	
+				} else {
+					res.json(utils.response("success", result));	
+				}
+			});
+		} catch(err) {
+			res.json(utils.response("failure", { "errmsg": err }));
+		}
 	},
 	updatechits: function(req, res){
 		let chitdata = req.body;
