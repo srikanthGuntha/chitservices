@@ -17,7 +17,7 @@ module.exports = {
         }));
         // to allow the CORS
         app.use(function(req, res, next) {
-            var allowedOrigins = ['http://127.0.0.1:4200', 'https://cschits.herokuapp.com'];
+            var allowedOrigins = ['http://127.0.0.1:4200', 'https://cschits.herokuapp.com', 'http://cschits.herokuapp.com'];
             var origin = req.headers.origin;
             if(allowedOrigins.indexOf(origin) > -1){
                 res.setHeader('Access-Control-Allow-Origin', origin);

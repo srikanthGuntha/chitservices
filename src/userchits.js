@@ -15,11 +15,33 @@ var userchits = {
 		});
 	},
 	getpopulateuserchits: function(req, res){
-		Userchit.find({userid: req.sessionuid}).populate('chit userid').exec(function(err, result) {
+		// we may or may not lean() below
+		/* To populate only required fields
+		*	.populate({ path: 'chit userid', chitvalue: 1, subfee: 1, tenure: 1, branch: 0, userid: 0, created_at: 0, activemembers: 0, chitstartdate: 0, __v: 0 })
+		*/ 
+		Userchit.find({userid: req.sessionuid})
+		.lean()
+		.populate({ path: 'chit userid' })
+		.exec(function(err, docs) {
+
+			var options = {
+				path: 'chit.chitid',
+				model: 'Chitid',
+				select: 'chitid'
+			};
+
 			if (err) res.json(utils.response("failure", { "errmsg": err }));
 
-			res.json(utils.response("success", result));
+			Userchit.populate(docs, options, function (err, result) {
+				res.json(utils.response("success", result));
+			});
 		});
+
+		// Userchit.find({userid: req.sessionuid}).populate('chit userid').exec(function(err, result) {
+		// 	if (err) res.json(utils.response("failure", { "errmsg": err }));
+
+		// 	res.json(utils.response("success", result));
+		// });
 	},
 	saveuserchits: function(req, res){
 		console.log("userchitdata ", req.body);
