@@ -9,7 +9,7 @@ module.exports = function(req, res, next) {
         try {
             JWT.verify(token, 'keepitupauth', function(err, decodedToken){
                 if(err){
-                    res.json(utils.response("failure", { "errmsg": err }));
+                    return res.json(utils.makerespobj(false, 101801, "Invalid token or expired, please login again.", err));
                 } else {
                     req.sessionuid = decodedToken.sub;
                     req.actionid = actionid;
@@ -18,9 +18,9 @@ module.exports = function(req, res, next) {
                 }
             });
         } catch (err) {
-            res.json(utils.response("failure", { "errmsg": err }));
+            return res.json(utils.makerespobj(false, 500500, "Internal server error."));
         }
     } else {
-        res.json(utils.response("failure", { "cmsg": "Request header must contains active token information." }));
+        return res.json(utils.makerespobj(false, 101803, "Request headers must contains token information."));
     }
 };
