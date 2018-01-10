@@ -1,4 +1,17 @@
 module.exports = {
+    makerespobj: function(status, code, message, data){
+      var responseobj = {
+          success: status,
+          message: message
+      };
+      if(status) {
+        responseobj["data"] = data;
+      } else {
+        responseobj["code"] = code;
+        responseobj["error"] = data;
+      }
+      return responseobj;
+    },
     createobj: function(){
       return reobj = {
           status: "success",
