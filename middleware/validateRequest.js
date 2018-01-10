@@ -3,6 +3,7 @@ var utils = require("../utils/response");
 
 module.exports = function(req, res, next) {
     var token = req.headers['x-access-token'];
+    var role = req.headers['x-access-role'];
     var actionid = req.query.id;
     if (token) {
         try {
@@ -12,6 +13,7 @@ module.exports = function(req, res, next) {
                 } else {
                     req.sessionuid = decodedToken.sub;
                     req.actionid = actionid;
+                    req.role = role;
                     next();
                 }
             });
