@@ -6,6 +6,7 @@ module.exports = {
       };
       if(status) {
         responseobj["data"] = data;
+        responseobj["code"] = code;
       } else {
         responseobj["code"] = code;
         responseobj["error"] = data;
