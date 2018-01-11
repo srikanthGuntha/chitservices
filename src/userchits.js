@@ -24,12 +24,24 @@ var userchits = {
 		try {
 			var role = req.role;
 			if(role==="admin"){
-				Userchit.find().lean().populate('chit userid').exec(function(err, result) {
-					if(err){
-						return res.json(utils.makerespobj(false, 700101, "Something wrong with input data.", err));	
-					} else {
-						return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));	
-					}
+				Userchit.find()
+				.lean()
+				.populate({ path: 'chit userid' })
+				.exec(function(err, docs) {
+					if (err) return res.json(utils.makerespobj(false, 700102, "Something wrong with chitid data", err));
+
+					var options = {
+						path: 'chit.chitid',
+						model: 'Chitid',
+						select: 'chitid'
+					};
+					Userchit.populate(docs, options, function (err, result) {
+						if(err){
+							return res.json(utils.makerespobj(false, 700103, "Error while hitting user chit data", err));	
+						} else {
+							return res.json(utils.makerespobj(true, null, "User chit data retrieved successfully.", result));	
+						}
+					});
 				});
 			} else if(role==="agent") {
 			} else {
