@@ -50,7 +50,7 @@ var auth = {
                 state: registerdata.state,
                 pincode: registerdata.pincode,
                 idtype: registerdata.IdType,
-                idnumber: registerdata.IdNumber,
+                idnumber: registerdata.IdNumber
             });
 
             register.save(function(err, result){

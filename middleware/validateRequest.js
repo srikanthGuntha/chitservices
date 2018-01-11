@@ -18,7 +18,7 @@ module.exports = function(req, res, next) {
                 }
             });
         } catch (err) {
-            return res.json(utils.makerespobj(false, 500500, "Internal server error."));
+            return res.json(utils.makerespobj(false, 101802, "Internal server error."));
         }
     } else {
         return res.json(utils.makerespobj(false, 101803, "Request headers must contains token information."));
