@@ -33,20 +33,6 @@ var auth = {
         } catch(err) {
             return res.json(utils.makerespobj(false, 500500, "Internal server error."));
         }
-        // var queryuser = req.body;
-        // Register.find(queryuser, function(err, result){
-        //     if (err) res.json(utils.response("failure", { "errmsg": err }));
-
-        //     if(result.length > 0){
-        //         var data = result[0].toObject();
-        //         var token = generateToken(data["_id"]);
-        //         data.token = token;
-
-        //         res.json(utils.response("success", data));
-        //     } else {
-        //         if (err) res.json(utils.response("failure", { "errmsg": "Invalid login details" }));
-        //     }
-        // });
     },
     register: function(req, res) {
         try {
@@ -74,55 +60,6 @@ var auth = {
             });
         } catch(err) {
             return res.json(utils.makerespobj(false, 500500, "Internal server error."));
-        }
-        // var registerdata = req.body;
-        // var register = new Register({
-        //     firstname: registerdata.firstname,
-        //     lastname: registerdata.lastname,
-        //     email: registerdata.email,
-        //     password: registerdata.password
-        // });
-        // register.save(function(err, result){
-        //     if (err) res.json(utils.response("failure", { "errmsg": err }));
-            
-        //     res.json(utils.response("success", result));
-        // });
-    },
-    login1: function(req, res) {
-        try {
-            var logindata = req.body;
-            db.registers.find(logindata, function(err, result) {
-                if (err) res.json(utils.response("failure", { "errmsg": err }));
-                var data = result[0];
-                if(data && data["_id"]) {
-                    token = generateToken(data["_id"]);
-                    data.token = token;
-                    res.json(utils.response("success", data));
-                } else {
-                    res.json(utils.response("failure", { "cmsg": "No user found with the credentials." }));
-                }
-            });
-        } catch (err) {
-            res.json(utils.response("failure", { "errmsg": err }));
-        }
-    },
-    register1: function(req, res) {
-        try {
-            var userdata = req.body;
-            if (!userdata) {
-                res.json(utils.response("failure", { "errmsg": "Something wrong with input data!" }));
-            } else {
-                userdata.role = "user";
-                userdata.timestamp = new Date();
-                db.users.insert(userdata, function(err, result) {
-                    if (err) res.json(utils.response("failure", { "errmsg": err }));
-                    delete result["_id"];
-                    delete result["password"];
-                    res.json(utils.response("success", result));
-                });
-            }
-        } catch (err) {
-            res.json(utils.response("failure", { "errmsg": err }));
         }
     }
 };

@@ -8,51 +8,78 @@ var Chitids = require('../models/chitid');
 
 var branches = {
 	getchitids: function(req, res) {
-		Chitids.find({userid: req.sessionuid}, function(err, result){
-			if (err) res.json(utils.response("failure", { "errmsg": err }));
-
-			res.json(utils.response("success", result));
-		});
+		try{
+			Chitids.find({userid: req.sessionuid}, function(err, result){
+				if(err){
+					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
+				} else {
+					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+				}
+			});
+		} catch(err) {
+			return res.json(utils.makerespobj(false, 500500, "Internal data or connection problem.", err));	
+		}
 	},
-	getpopulate: function(req, res){
-		Chitids.find({userid: req.sessionuid}).populate('userid branch').exec(function(err, result) {
-			if (err) res.json(utils.response("failure", { "errmsg": err }));
-
-			res.json(utils.response("success", result));
-		});
+	getpopulatechitids: function(req, res){
+		try{
+			Chitids.find({userid: req.sessionuid}).populate('userid branch').exec(function(err, result) {
+				if(err){
+					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
+				} else {
+					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+				}
+			});
+		} catch(err) {
+			return res.json(utils.makerespobj(false, 500500, "Internal data or connection problem.", err));	
+		}
 	},
 	savechitids: function(req, res){
-		var chitidsdata = new Chitids({
-	        chitid: req.body.chitid,
-	        branch: req.body.branch,
-	        userid: req.sessionuid
-	    });
-
-		chitidsdata.save(function(err, result){
-			console.log("err", err);
-			if (err) res.json(utils.response("failure", { "errmsg": err }));
-
-			res.json(utils.response("success", result));
-		});
+		try{
+			var chitidsdata = new Chitids({
+		        chitid: req.body.chitid,
+		        branch: req.body.branch,
+		        userid: req.sessionuid
+		    });
+			chitidsdata.save(function(err, result){
+				if(err){
+					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
+				} else {
+					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+				}
+			});
+		} catch(err) {
+			return res.json(utils.makerespobj(false, 500500, "Internal data or connection problem.", err));	
+		}
 	},
 	updatechitids: function(req, res){
-		let chitiddata = req.body;
-		let chitid = req.actionid;
-
-		delete chitiddata._id;
-
-		Chitids.update({ _id: chitid }, { $set: chitiddata}, function(err, result){
-			if(err) res.json(utils.response("failure", {"errmsg": err}));
-			res.json(utils.response("success", result));
-		});
+		try{
+			let chitiddata = req.body;
+			let chitid = req.actionid;
+			delete chitiddata._id;
+			Chitids.update({ _id: chitid }, { $set: chitiddata}, function(err, result){
+				if(err){
+					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
+				} else {
+					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+				}
+			});
+		} catch(err) {
+			return res.json(utils.makerespobj(false, 500500, "Internal data or connection problem.", err));	
+		}
 	},
 	deletechitids: function(req, res){
-		let chitid = req.actionid;
-		
-		Chitids.findOneAndRemove({ _id: chitid }, function(err, result){
-			if(err) res.json(utils.response("failure", {"errmsg": err}));
-			res.json(utils.response("success", result));
-		});
+		try{
+			let chitid = req.actionid;
+			Chitids.findOneAndRemove({ _id: chitid }, function(err, result){
+				if(err){
+					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
+				} else {
+					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+				}
+			});
+		} catch(err) {
+			return res.json(utils.makerespobj(false, 500500, "Internal data or connection problem.", err));	
+		}
 	}
 }
 
