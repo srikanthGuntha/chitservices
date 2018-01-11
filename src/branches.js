@@ -8,59 +8,93 @@ var Branch = require('../models/branch');
 
 var branches = {
 	getbranches: function(req, res) {
-		Branch.find({userid: req.sessionuid}, function(err, result){
-			if (err) res.json(utils.response("failure", { "errmsg": err }));
-
-			res.json(utils.response("success", result));
-		});
+		try{
+			Branch.find({userid: req.sessionuid}, function(err, result){
+				if(err){
+					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
+				} else {
+					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+				}
+			});
+		} catch(err) {
+			return res.json(utils.makerespobj(false, 500500, "Internal data or connection problem.", err));	
+		}
 	},
 	savebranches: function(req, res){
-		var branch = new Branch({
-	        branchname: req.body.branchname,
-	        userid: req.sessionuid
-	    });
-
-		branch.save(function(err, result){
-			if (err) res.json(utils.response("failure", { "errmsg": err }));
-
-			res.json(utils.response("success", result));
-		});
+		try {
+			var branch = new Branch({
+		        branchname: req.body.branchname,
+		        userid: req.sessionuid
+		    });
+			branch.save(function(err, result){
+				if(err){
+					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
+				} else {
+					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+				}
+			});
+		} catch(err) {
+			return res.json(utils.makerespobj(false, 500500, "Internal data or connection problem.", err));	
+		}
 	},
 	updatebranches: function(req, res){
-		let branch = req.body;
-		let branchid = req.actionid;
+		try {
+			let branch = req.body;
+			let branchid = req.actionid;
 
-		delete branch._id;
-
-		Branch.update({ _id: branchid }, { $set: branch}, function(err, result){
-			if(err) res.json(utils.response("failure", {"errmsg": err}));
-			res.json(utils.response("success", result));
-		});
+			delete branch._id;
+			Branch.update({ _id: branchid }, { $set: branch}, function(err, result){
+				if(err){
+					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
+				} else {
+					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+				}
+			});
+		} catch(err) {
+			return res.json(utils.makerespobj(false, 500500, "Internal data or connection problem.", err));	
+		}
 	},
 	deletebranches: function(req, res){
-		let branchid = req.actionid;
-		
-		Branch.findOneAndRemove({ _id: branchid }, function(err, result){
-			if(err) res.json(utils.response("failure", {"errmsg": err}));
-			res.json(utils.response("success", result));
-		});
+		try{
+			let branchid = req.actionid;
+			
+			Branch.findOneAndRemove({ _id: branchid }, function(err, result){
+				if(err){
+					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
+				} else {
+					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+				}
+			});
+		} catch(err) {
+			return res.json(utils.makerespobj(false, 500500, "Internal data or connection problem.", err));	
+		}
 	},
 	getonebranch: function(req, res) {
-		let uniquebranchid = req.body.id;
-		Branches.find({_id: uniquebranchid, userid: req.sessionuid}, function(err, result){
-			if (err) res.json(utils.response("failure", { "errmsg": err }));
-
-			res.json(utils.response("success", result));
-		});
+		try {
+			let uniquebranchid = req.body.id;
+			Branch.find({_id: uniquebranchid, userid: req.sessionuid}, function(err, result){
+				if(err){
+					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
+				} else {
+					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+				}
+			});
+		} catch(err) {
+			return res.json(utils.makerespobj(false, 500500, "Internal data or connection problem.", err));	
+		}
 	},
 	getpopulatebranches: function(req, res){
-		Branch.find({userid: req.sessionuid}).populate('userid', "firstname").exec(function(err, result) {
-			console.log("errr ", err);
-			console.log('Story title: ', result);
-			if (err) res.json(utils.response("failure", { "errmsg": err }));
-
-			res.json(utils.response("success", result));
-		});
+		try{
+			Branch.find({userid: req.sessionuid}).populate('userid', "firstname").exec(function(err, result) {
+				if(err){
+					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
+				} else {
+					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+				}
+			});
+		} catch(err) {
+			return res.json(utils.makerespobj(false, 500500, "Internal data or connection problem.", err));	
+		}
 	}
 }
 

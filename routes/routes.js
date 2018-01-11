@@ -41,6 +41,9 @@ module.exports = {
 
         // non auth but hit db services
         app.get("/getpopulatechits", common.getpopulatechits);
+        app.post("/isemailexists", common.isemailexists);
+        app.post("/ismobileexists", common.ismobileexists);
+        app.post("/savecontactinfo", common.savecontactinfo);
         
         // user chit services
         app.get("/api/v1/getuserchits", userchits.getuserchits);
@@ -67,7 +70,7 @@ module.exports = {
         app.put("/api/v1/updatechitids", chitids.updatechitids);
         app.delete("/api/v1/deletechitids", chitids.deletechitids);
 
-        app.get("/api/v1/getpopulate", chitids.getpopulate);
+        app.get("/api/v1/getpopulatechitids", chitids.getpopulatechitids);
 
         // chits
         app.post("/api/v1/savechits", chits.savechits);
