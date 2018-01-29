@@ -5,6 +5,7 @@ var chitids = require("../src/chitids");
 var chits = require("../src/chits");
 var userchits = require("../src/userchits");
 var common = require("../src/common");
+var registers = require("../src/registers");
 
 module.exports = {
 
@@ -78,6 +79,15 @@ module.exports = {
         app.get("/api/v1/getchits", chits.getchits);
         app.put("/api/v1/updatechits", chits.updatechits);
         app.delete("/api/v1/deletechits", chits.deletechits);
+
+        /*******************************************************************
+         * Agent servcies
+        *******************************************************************/
+        // user management by agent
+        app.get("/api/v1/getregisters", registers.getregisters);
+        app.post("/api/v1/saveregisters", registers.saveregisters);
+        app.put("/api/v1/updateregisters", registers.updateregisters);
+        app.delete("/api/v1/deleteregisters", registers.deleteregisters);
 
         // dummy services
         app.get("/", function(req, res) {
