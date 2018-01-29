@@ -9,7 +9,7 @@ var Register = require("../models/register");
 var registers = {
     getregisters: function(req, res) {
         try{
-            Register.find({created_by: req.sessionuid}, function(err, result){
+            Register.find({creator_id: req.sessionuid}, function(err, result){
                 if(err){
                     return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err)); 
                 } else {
