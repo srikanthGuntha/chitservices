@@ -59,6 +59,19 @@ var registerSchema = new Schema({
     	required: true,
     	default: "user"
     },
+    creator_role: {
+    	//by default admin, send this property value as 'agent' when the loggedin user role is 'agent'
+    	type: String,
+    	default: "admin"
+    },
+    creator_id: {
+    	type: Schema.Types.ObjectId,
+        ref: "Register"
+    },
+    isactive: {
+    	type: Boolean,
+    	default: true
+    },
     created_at: {
     	type: Date,
     	required: true,
