@@ -23,7 +23,7 @@ var userchits = {
 	getpopulateuserchits: function(req, res){
 		try {
 			var role = req.role;
-			if(role==="admin"){
+			if(role === "admin"){
 				Userchit.find()
 				.lean()
 				.populate({ path: 'chit userid' })
@@ -95,7 +95,7 @@ var userchits = {
 	saveuserchits: function(req, res){
 		try {
 			var role = req.role;
-			if(role === agent) {
+			if( role === "agent" ) {
 				var userchit = new Userchit({
 			        chit: req.body.chit_id,
 			        userid: req.body.userid,
