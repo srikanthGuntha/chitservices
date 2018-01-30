@@ -44,6 +44,25 @@ var userchits = {
 					});
 				});
 			} else if(role==="agent") {
+				Userchit.find({creator_id: req.sessionuid})
+				.lean()
+				.populate({ path: 'chit userid' })
+				.exec(function(err, docs) {
+					if (err) return res.json(utils.makerespobj(false, 700102, "Something wrong with chitid data", err));
+
+					var options = {
+						path: 'chit.chitid',
+						model: 'Chitid',
+						select: 'chitid'
+					};
+					Userchit.populate(docs, options, function (err, result) {
+						if(err){
+							return res.json(utils.makerespobj(false, 700103, "Error while hitting user chit data", err));	
+						} else {
+							return res.json(utils.makerespobj(true, null, "User chit data retrieved successfully.", result));	
+						}
+					});
+				});
 			} else {
 				// we may or may not lean() below
 				/* To populate only required fields
@@ -75,10 +94,23 @@ var userchits = {
 	},
 	saveuserchits: function(req, res){
 		try {
-			var userchit = new Userchit({
-		        chit: req.body.chit_id,
-		        userid: req.sessionuid
-		    });
+			var role = req.role;
+			if(role === agent) {
+				var userchit = new Userchit({
+			        chit: req.body.chit_id,
+			        userid: req.body.userid,
+			        creator_id: req.sessionuid,
+			        creator_role: "agent"
+			    });
+			} else {
+				var userchit = new Userchit({
+			        chit: req.body.chit_id,
+			        userid: req.sessionuid,
+					creator_id: req.sessionuid,
+					creator_role: "user"
+			    });
+			}
+			
 		    Userchit.find({chit: req.body.chit_id, userid: req.sessionuid}, function(err, result){
 				if(err){
 					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	

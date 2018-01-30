@@ -7,8 +7,14 @@ var schema = new Schema({
         ref: "Chit",
         required: true
     },
-    chit_master: {
+    creator_role: {
+        type: String,
+        required: true,
+        default: "admin"
+    },
+    creator_id: {
         type: Schema.Types.ObjectId,
+        required: true,
         ref: "Register"
     },
     userid: {
