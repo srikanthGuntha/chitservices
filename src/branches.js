@@ -31,7 +31,7 @@ var branches = {
 				if(err){
 					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
 				} else {
-					if(result && result.length > 0){
+					if(result && result.data.length > 0){
 						return res.json(utils.makerespobj(true, 4000102, "Branch already exists", result));
 					}
 					else{
