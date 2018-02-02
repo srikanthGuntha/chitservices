@@ -35,13 +35,14 @@ var branches = {
 						return res.json(utils.makerespobj(true, 4000102, "Branch already exists", result));
 					}
 					else{
-						branch.save(function(err, result){
-							if(err){
-								return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
-							} else {
-								return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
-							}
-						});
+						return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+						// branch.save(function(err, result){
+						// 	if(err){
+						// 		return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
+						// 	} else {
+						// 		return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+						// 	}
+						// });
 					}
 				}
 			});
