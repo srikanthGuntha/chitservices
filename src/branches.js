@@ -28,12 +28,21 @@ var branches = {
 		    });
 
 		    Branch.findOne({branchname: req.body.branchname}, function(err, result){
-		    	console.log(err);
-		    	console.log(result);
 				if(err){
 					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
 				} else {
-					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+					if(result && result.length > 0){
+						return res.json(utils.makerespobj(true, 4000102, "Branch already exists", result));
+					}
+					else{
+						branch.save(function(err, result){
+							if(err){
+								return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
+							} else {
+								return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+							}
+						});
+					}
 				}
 			});
 
