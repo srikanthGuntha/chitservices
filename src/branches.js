@@ -26,36 +26,13 @@ var branches = {
 		        branchname: req.body.branchname,
 		        userid: req.sessionuid
 		    });
-
-		    Branch.findOne({branchname: req.body.branchname}, function(err, result){
+			branch.save(function(err, result){
 				if(err){
 					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
 				} else {
-					if(result && result.data.length > 0){
-						return res.json(utils.makerespobj(true, 4000102, "Branch already exists", result));
-					}
-					else{
-						return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
-						// branch.save(function(err, result){
-						// 	if(err){
-						// 		return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
-						// 	} else {
-						// 		return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
-						// 	}
-						// });
-					}
+					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
 				}
 			});
-
-
-			// branch.save(function(err, result){
-			// 	if(err){
-			// 		return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
-			// 	} else {
-			// 		return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
-			// 	}
-			// });
-
 		} catch(err) {
 			return res.json(utils.makerespobj(false, 500500, "Internal data or connection problem.", err));	
 		}
