@@ -5,6 +5,7 @@ mongoose.connect("mongodb://dbchits:dbchits123@ds135196.mlab.com:35196/dbchits",
 });
 
 var Chit = require('../models/chit');
+var Userchit = require('../models/userchit');
 
 var chits = {
 	getpopulatechits: function(req, res){
@@ -74,13 +75,21 @@ var chits = {
 	deletechits: function(req, res){
 		try{
 			let chitid = req.actionid;
-			Chit.findOneAndRemove({ _id: chitid }, function(err, result){
-				if(err){
-					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
-				} else {
-					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
-				}
-			});
+            Userchit.findOne({chit:req.actionid},function(err, result){
+                if(result === null){
+                    Chit.findOneAndRemove({ _id: chitid }, function(err, result){
+			            if(err){
+			                return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));
+			            } else {
+			                return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+			            }
+		            });
+                }
+
+                if(result){
+                    return res.json(utils.makerespobj(false, 400101, "user is registered with this chit Please contact admin", err));
+                }
+            });
 		} catch(err) {
 			return res.json(utils.makerespobj(false, 500500, "Internal data or connection problem.", err));	
 		}
