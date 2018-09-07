@@ -5,6 +5,7 @@ mongoose.connect("mongodb://dbchits:dbchits123@ds135196.mlab.com:35196/dbchits",
 });
 
 var Chitids = require('../models/chitid');
+var Chits = require('../models/chit');
 
 var branches = {
 	getchitids: function(req, res) {
@@ -70,13 +71,21 @@ var branches = {
 	deletechitids: function(req, res){
 		try{
 			let chitid = req.actionid;
-			Chitids.findOneAndRemove({ _id: chitid }, function(err, result){
-				if(err){
-					return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));	
-				} else {
-					return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
-				}
-			});
+            Chits.findOne({chitid:req.actionid},function(err, result){
+                if(result === null){
+                    Chitids.findOneAndRemove({ _id: chitid }, function(err, result){
+			            if(err){
+			                return res.json(utils.makerespobj(false, 400101, "Something wrong with input data.", err));
+			            } else {
+			                return res.json(utils.makerespobj(true, null, "Operation is successfull.", result));
+			            }
+		            });
+                }
+
+                if(result){
+                    return res.json(utils.makerespobj(false, 400101, "Associated chit exists with this chitid", err));
+                }
+            });
 		} catch(err) {
 			return res.json(utils.makerespobj(false, 500500, "Internal data or connection problem.", err));	
 		}
